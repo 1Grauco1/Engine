@@ -25,9 +25,9 @@ Engine gráfica multiplataforma em **Java/Kotlin**, construída com **LWJGL 3**,
 - Carregamento de texturas com STB.
 
 ### 📖 _Referências_
-LWJGL 3 Oficial
+[LWJGL 3 Oficial](https://www.lwjgl.org/guide)
 
-GLFW Oficial
+[GLFW Oficial](https://www.glfw.org/documentation.html)
 
-OpenGL Documentation
+[OpenGL Documentation](https://www.opengl.org/Documentation/Documentation.html)
 
