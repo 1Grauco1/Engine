@@ -36,10 +36,10 @@ public class LevelEditorScene extends Scene {
     // Vertex data
     private final float[] vertexArray = {
         // position         // color (RGBA)
-         0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Bottom right
-        -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, // Top left
-         0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Top right
-        -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Bottom left
+         0.5f, -0.5f,       0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Bottom right
+        -0.5f,  0.5f,       0.0f, 0.0f, 1.0f, 0.0f, 1.0f, // Top left
+         0.5f,  0.5f,       0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Top right
+        -0.5f, -0.5f,       0.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Bottom left
     };
 
     // Index data
@@ -151,7 +151,7 @@ public class LevelEditorScene extends Scene {
 
         glBindVertexArray(0);
         glUseProgram(0);
-    }                                                                                       
+    }
 
     @Override
     public void cleanup() {
