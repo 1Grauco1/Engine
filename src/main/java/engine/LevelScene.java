@@ -1,7 +1,5 @@
 package engine;
 
-import java.sql.SQLOutput;
-
 public class LevelScene extends Scene{
 
     public LevelScene(){
@@ -13,11 +11,6 @@ public class LevelScene extends Scene{
 
     @Override
     public void update(float dt) {
-
-    }
-
-    @Override
-    public void cleanup(){
 
     }
 }
