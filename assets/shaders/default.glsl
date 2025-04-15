@@ -17,9 +17,11 @@ void main() {
 #type fragment
 #version 330 core
 
+uniform float uTime;
+
 in vec4 fColor;
 out vec4 FragColor;
 
 void main() {
-    FragColor = fColor;
+    FragColor = sin(uTime) * fColor;
 }
