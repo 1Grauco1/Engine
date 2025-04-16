@@ -3,6 +3,7 @@ package engine;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import render.Shader;
+import render.Texture;
 import util.Time;
 
 import java.nio.FloatBuffer;
@@ -14,13 +15,15 @@ public class LevelEditorScene extends Scene {
 
     private int vaoID, vboID, eboID;
     private Shader defaultShader;
+    private Texture testImage;
 
     // Vertex and index arrays
     private final float[] vertexArray = {
-            100.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-            -0.5f,  100.5f, 0.0f,  0.0f, 1.0f, 0.0f, 1.0f,
-            100.5f,  100.5f, 0.0f,  0.0f, 0.0f, 1.0f, 1.0f,
-            -0.5f, -0.5f, 0.0f,  1.0f, 1.0f, 0.0f, 1.0f
+            //position              //color                     //UV coordinates
+            100f,   0f, 0.0f,       1.0f, 0.0f, 0.0f, 1.0f,     1,1, //Bottom right 0
+              0f, 100f, 0.0f,       0.0f, 1.0f, 0.0f, 1.0f,     0,0, //Top left     1
+            100f, 100f, 0.0f,       0.0f, 0.0f, 1.0f, 1.0f,     1,0, //Top right    2
+              0f,   0f, 0.0f,       1.0f, 1.0f, 0.0f, 1.0f,     0,1  //Bottom left   3
     };
 
     private final int[] elementArray = {
@@ -36,6 +39,8 @@ public class LevelEditorScene extends Scene {
         // Load and compile shader
         defaultShader = new Shader("assets/shaders/default.glsl");
         defaultShader.compileAndLinkShaders();
+
+        this.testImage= new Texture("assets/images/testImage.png");
 
         // Set up buffers and attributes
         setupVertexData();
@@ -65,20 +70,28 @@ public class LevelEditorScene extends Scene {
         // Define layout of vertex data (position and color)
         int positionSize = 3;
         int colorSize = 4;
+        int uvSize= 2;
         int floatSize = 4;
-        int vertexSize = (positionSize + colorSize) * floatSize;
+        int vertexSizeBytes = (positionSize + colorSize + uvSize) * Float.BYTES;
 
-        glVertexAttribPointer(0, positionSize, GL_FLOAT, false, vertexSize, 0);
+        glVertexAttribPointer(0, positionSize, GL_FLOAT, false, vertexSizeBytes, 0);
         glEnableVertexAttribArray(0);
 
-        glVertexAttribPointer(1, colorSize, GL_FLOAT, false, vertexSize, positionSize * floatSize);
+        glVertexAttribPointer(1, colorSize, GL_FLOAT, false, vertexSizeBytes, positionSize * Float.BYTES  );
         glEnableVertexAttribArray(1);
+
+        glVertexAttribPointer(2, uvSize, GL_FLOAT, false, vertexSizeBytes, (positionSize + colorSize) * Float.BYTES);
+        glEnableVertexAttribArray(2);
     }
 
     @Override
     public void update(float dt) {
         // Use shader
         defaultShader.use();
+
+        defaultShader.uploadTexture("TEXT_SAMPLE", 0);
+        glActiveTexture(GL_TEXTURE0);
+        testImage.bind();
 
         // Upload camera matrices
         defaultShader.uploadMat4f("uProj", camera.getProjectionMatrix());
