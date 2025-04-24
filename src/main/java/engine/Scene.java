@@ -1,30 +1,42 @@
 package engine;
 
+import render.Renderer;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Scene {
-    private boolean isRunning= false;
-    private List<GameObject> gameObjects= new ArrayList<>();
 
+    protected Renderer renderer= new Renderer();
     protected Camera camera;
+    private boolean isRunning= false;
+    public List<GameObject> gameObjects= new ArrayList<>();
+
+
     public Scene(){}
 
     public abstract void update(float dt);
     public void init(){}
-    public void cleanUpScene(){}
-    public void addGameObjectToScene(GameObject gO){
+
+    public void start(){
+        for(GameObject go : gameObjects){
+            go.start();
+            this.renderer.add(go);
+        }
+    }
+
+    public void addGameObjectToScene(GameObject go){
         if(!isRunning){
-            gameObjects.add(gO);
+            gameObjects.add(go);
         }
         else{
-            gameObjects.add(gO);
-            gO.start();
+            gameObjects.add(go);
+            go.start();
+            this.renderer.add(go);
         }
-    };
-    public void start(){
-        for(GameObject gO : gameObjects){
-            gO.start();
-        }
+    }
+
+    public Camera camera(){
+        return this.camera;
     }
 }
