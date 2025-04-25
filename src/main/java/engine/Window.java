@@ -3,9 +3,6 @@ package engine;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
-import util.Time;
-
-import java.util.Objects;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -27,10 +24,7 @@ public class Window {
         this.width= 1980;
         this.height= 1080;
         this.title= "Game";
-        r= 1;
-        g= 1;
-        b= 1;
-        a= 1;
+        r= 0; g= 0; b= 0; a= 0;
     }
 
     public static void changeScene(int newScene){
@@ -127,7 +121,7 @@ public class Window {
     }
     public void loop(){
 
-        float beginTime= Time.getTime();
+        float beginTime= (float) glfwGetTime();
         float endTime;
         float dt= -1.0f;
 
@@ -145,7 +139,7 @@ public class Window {
 
             glfwSwapBuffers(glfwWindow);
 
-            endTime= Time.getTime();
+            endTime= (float) glfwGetTime();
             dt= endTime - beginTime;
             beginTime= endTime;
         }
