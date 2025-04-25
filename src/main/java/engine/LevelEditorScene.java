@@ -11,6 +11,7 @@
         @Override
         public void init() {
             this.camera= new Camera(new Vector2f());
+
             int xOffset= 10;
             int yOffset= 10;
 
