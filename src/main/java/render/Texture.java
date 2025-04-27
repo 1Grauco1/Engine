@@ -10,6 +10,7 @@ import static org.lwjgl.stb.STBImage.*;
 public class Texture {
     private String filePath;  // Path to the texture image file
     private int texID;       // OpenGL texture ID
+    private int width, height;
 
     // Constructor - loads texture from file and sets up OpenGL texture
     public Texture(String filePath) {
@@ -35,6 +36,8 @@ public class Texture {
         stbi_set_flip_vertically_on_load(true);
 
         if (image != null) {
+            this.width = width.get(0);
+            this.height = height.get(0);
             // Upload image data to GPU based on number of channels
             if (channels.get(0) == 3) {
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width.get(0), height.get(0), 0,
@@ -63,5 +66,13 @@ public class Texture {
     // Unbind any texture
     public void unbind() {
         glBindTexture(GL_TEXTURE_2D, 0);
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public int getHeight() {
+        return this.height;
     }
 }
