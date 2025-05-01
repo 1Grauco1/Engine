@@ -14,8 +14,7 @@ public class Transform {
         init(new Vector2f(), new Vector2f());
     }
 
-    public Transform(Vector2f position){
-        init(position, new Vector2f());
+    public Transform(Vector2f position){ init(position, new Vector2f());
     }
 
     public Transform(Vector2f position, Vector2f scale){

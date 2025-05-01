@@ -3,8 +3,7 @@ package render;
 import components.SpriteRender;
 import engine.GameObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Renderer {
 
@@ -25,7 +24,7 @@ public class Renderer {
     private void addSpr(SpriteRender sprite){
         boolean added= false;
         for(RenderBatch batch : batches){
-            if(batch.hasRoom()){
+            if(batch.hasRoom() && batch.getzIndex() == sprite.gameObject.getZIndex()){
                 Texture tex= sprite.getTexture();
                 if(tex == null || (batch.hasTexture(tex) || batch.hasTextureRoom())){
                     batch.addSprite(sprite);
@@ -37,10 +36,11 @@ public class Renderer {
         }
 
         if(!added){
-            RenderBatch newBatch= new RenderBatch(MAX_BATCH_SIZE);
+            RenderBatch newBatch= new RenderBatch(MAX_BATCH_SIZE, sprite.gameObject.getZIndex());
             newBatch.start();
             batches.add(newBatch);
             newBatch.addSprite(sprite);
+            Collections.sort(batches);
         }
     }
 

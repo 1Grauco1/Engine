@@ -24,7 +24,7 @@ public class Window {
         this.width= 1980;
         this.height= 1080;
         this.title= "Game";
-        r= 0; g= 0; b= 0; a= 0;
+        r= 1; g= 0; b= 1; a= 1;
     }
 
     public static void changeScene(int newScene){
@@ -115,6 +115,9 @@ public class Window {
         // creates the GLCapabilities instance and makes the OpenGL
         // bindings available for use.
         GL.createCapabilities();
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
         Window.changeScene(0);
 

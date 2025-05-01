@@ -33,10 +33,10 @@ public class SpriteSheet {
             float topY = (currentY + spriteHeight) / (float)textureHeight;
 
             Vector2f[] texCoords = {
-                    new Vector2f(rightX, topY),    // Top-right
-                    new Vector2f(rightX, bottomY), // Bottom-right
-                    new Vector2f(leftX, bottomY),   // Bottom-left
-                    new Vector2f(leftX, topY)       // Top-left
+                    new Vector2f(rightX, bottomY),    // Top-right
+                    new Vector2f(rightX, topY), // Bottom-right
+                    new Vector2f(leftX, topY),   // Bottom-left
+                    new Vector2f(leftX, bottomY)       // Top-left
             };
 
             this.sprites.add(new Sprite(this.texture, texCoords));

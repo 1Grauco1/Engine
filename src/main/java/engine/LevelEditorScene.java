@@ -6,8 +6,11 @@ import components.SpriteSheet;
 import org.joml.Vector2f;
 import util.AssetPool;
 
+import java.awt.*;
+
 public class LevelEditorScene extends Scene {
 
+    private SpriteSheet sprites;
     private GameObject obj1;
 
     public LevelEditorScene() {}
@@ -17,10 +20,10 @@ public class LevelEditorScene extends Scene {
         loadResources();
         this.camera = new Camera(new Vector2f());
 
-        SpriteSheet sprites = AssetPool.getSpriteSheet("assets/images/Sprite-0003.png");
+        this.sprites = AssetPool.getSpriteSheet("assets/images/Sprite-0003.png");
 
         obj1 = new GameObject("Test Object",
-                new Transform(new Vector2f(100, 100), new Vector2f(32, 32)));
+                new Transform(new Vector2f(250, 250), new Vector2f(150, 150)));
         obj1.addComponent(new SpriteRender(sprites.getSprite(0)));
         this.addGameObjectToScene(obj1);
     }
@@ -37,9 +40,29 @@ public class LevelEditorScene extends Scene {
                 ));
     }
 
+    private int spriteIndex = 0;
+    private float spriteFlipTimeLeft = 0.0f;
+    private final float TIME_PER_FRAME = 0.2f;
+
     @Override
     public void update(float dt) {
+
+        spriteFlipTimeLeft -= 3 * dt;
+
+        if(spriteFlipTimeLeft <= 0) {
+            spriteFlipTimeLeft = TIME_PER_FRAME;
+            spriteIndex++;
+
+            if(spriteIndex > 8) {
+                spriteIndex = 0;
+            }
+
+            obj1.getComponent(SpriteRender.class).setSprite(sprites.getSprite(spriteIndex));
+
+        }
+
         obj1.transform.position.x += 10 * dt;
+
         // Update all game objects
         for (GameObject go : this.gameObjects) {
             go.update(dt);
