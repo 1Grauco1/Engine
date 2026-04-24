@@ -1,5 +1,10 @@
 plugins {
     id("java")
+    id("application")
+}
+
+application {
+    mainClass.set("Main") // nome da sua classe Main
 }
 
 group = "org.example"
@@ -20,7 +25,7 @@ tasks.test {
 
 val lwjglVersion = "3.3.6"
 val jomlVersion = "1.10.7"
-val lwjglNatives = "natives-windows"
+val lwjglNatives = "natives-linux"
 
 repositories {
     mavenCentral()

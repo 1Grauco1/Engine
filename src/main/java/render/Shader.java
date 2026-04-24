@@ -12,11 +12,11 @@ import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.*;
 
 public class Shader {
-    private int shaderProgramID;      // OpenGL shader program ID
+    private int shaderProgramID; // OpenGL shader program ID
     private boolean beingUsed = false; // Tracks if shader is currently bound
-    private String vertexSource;      // Vertex shader source code
-    private String fragmentSource;    // Fragment shader source code
-    private final String filepath;    // Path to shader source file
+    private String vertexSource; // Vertex shader source code
+    private String fragmentSource; // Fragment shader source code
+    private final String filepath; // Path to shader source file
 
     // Constructor - loads and parses shader file into vertex/fragment parts
     public Shader(String filepath) {
@@ -30,12 +30,12 @@ public class Shader {
 
             // Parse first shader type (vertex/fragment)
             int index = source.indexOf("#type") + 6;
-            int eol = source.indexOf("\r\n", index);
+            int eol = source.indexOf("\n", index);
             String firstPattern = source.substring(index, eol).trim();
 
             // Parse second shader type
             index = source.indexOf("#type", eol) + 6;
-            eol = source.indexOf("\r\n", index);
+            eol = source.indexOf("\n", index);
             String secondPattern = source.substring(index, eol).trim();
 
             // Assign sources based on type order
@@ -48,10 +48,12 @@ public class Shader {
             }
 
             if (secondPattern.equals("vertex")) {
-                if (vertexSource != null) throw new IOException("Multiple vertex shaders detected");
+                if (vertexSource != null)
+                    throw new IOException("Multiple vertex shaders detected");
                 vertexSource = splitString[2];
             } else if (secondPattern.equals("fragment")) {
-                if (fragmentSource != null) throw new IOException("Multiple fragment shaders detected");
+                if (fragmentSource != null)
+                    throw new IOException("Multiple fragment shaders detected");
                 fragmentSource = splitString[2];
             } else {
                 throw new IOException("Unexpected token '" + secondPattern + "'");
@@ -96,9 +98,9 @@ public class Shader {
         if (glGetShaderi(shaderID, GL_COMPILE_STATUS) == GL_FALSE) {
             String log = glGetShaderInfoLog(shaderID);
             throw new RuntimeException("""
-                %s compilation failed in '%s':
-                %s
-                """.formatted(shaderType, filepath, log));
+                    %s compilation failed in '%s':
+                    %s
+                    """.formatted(shaderType, filepath, log));
         }
     }
 
@@ -107,9 +109,9 @@ public class Shader {
         if (glGetProgrami(programID, GL_LINK_STATUS) == GL_FALSE) {
             String log = glGetProgramInfoLog(programID);
             throw new RuntimeException("""
-                Shader program linking failed in '%s':
-                %s
-                """.formatted(filepath, log));
+                    Shader program linking failed in '%s':
+                    %s
+                    """.formatted(filepath, log));
         }
     }
 
