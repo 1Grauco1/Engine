@@ -17,7 +17,7 @@ public class Window {
     public float r, g, b, a;
 
     private static Window window= null;
-
+    private ImGuiLayer imGuiLayer;
     private static Scene currentScene;
 
     private Window(){
@@ -63,32 +63,27 @@ public class Window {
         init();
         loop();
 
-        //Free the Memory
+        imGuiLayer.destroy();
         glfwFreeCallbacks(glfwWindow);
         glfwDestroyWindow(glfwWindow);
 
-        //Terminate GLFW and free the error callback
         glfwTerminate();
         glfwSetErrorCallback(null).free();
 
     }
 
     public void init(){
-        //Setup an error callback
         GLFWErrorCallback.createPrint(System.err).set();
 
-        //Initialize GLFW
         if(!glfwInit()){
             throw new IllegalStateException("Unable to initialize GLFW.");
         }
 
-        //Configure GLFW
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
         glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
-        //Create Window;
         glfwWindow= glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
 
         glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback);
@@ -100,24 +95,17 @@ public class Window {
             throw new IllegalStateException("Failed to create the GLFW window");
         }
 
-        //Make the OpenGL context current
         glfwMakeContextCurrent(glfwWindow);
-
-        //Enable Vsync
         glfwSwapInterval(1);
-
-        //Make the window visible;
         glfwShowWindow(glfwWindow);
 
-        // This line is critical for LWJGL's interoperation with GLFW's
-        // OpenGL context, or any context that is managed externally.
-        // LWJGL detects the context that is current in the current thread,
-        // creates the GLCapabilities instance and makes the OpenGL
-        // bindings available for use.
         GL.createCapabilities();
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
+        imGuiLayer = new ImGuiLayer();
+        imGuiLayer.init(glfwWindow);
 
         Window.changeScene(0);
 
@@ -129,16 +117,19 @@ public class Window {
         float dt= -1.0f;
 
         while(!glfwWindowShouldClose(glfwWindow)){
-            //Poll Events
             glfwPollEvents();
 
+            imGuiLayer.begin();
 
             glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT);
 
             if(dt >= 0){
                 currentScene.update(dt);
+                currentScene.imgui();
             }
+
+            imGuiLayer.end();
 
             glfwSwapBuffers(glfwWindow);
 

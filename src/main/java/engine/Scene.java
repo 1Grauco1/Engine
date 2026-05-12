@@ -9,13 +9,13 @@ public abstract class Scene {
 
     protected Renderer renderer = new Renderer();
     protected Camera camera;
-    // BUG FIX: was never set to true, so runtime-added objects never got start() or renderer.add()
     private boolean isRunning = false;
     public List<GameObject> gameObjects = new ArrayList<>();
 
     public Scene() {}
 
     public abstract void update(float dt);
+    public void imgui() {}
     public void init() {}
 
     public void start() {
@@ -23,7 +23,7 @@ public abstract class Scene {
             go.start();
             this.renderer.add(go);
         }
-        isRunning = true; // BUG FIX: mark scene as running after start
+        isRunning = true;
     }
 
     public void addGameObjectToScene(GameObject go) {
